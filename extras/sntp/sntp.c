@@ -77,7 +77,7 @@
  * SNTP_DEBUG: Enable debugging for SNTP.
  */
 #ifndef SNTP_DEBUG
-#define SNTP_DEBUG                  LWIP_DBG_OFF
+#define SNTP_DEBUG                  LWIP_DBG_ON
 #endif
 
 /** SNTP server port */
@@ -123,7 +123,7 @@
  *        server whose synchronization source has expired for a very long time.
  */
 #ifndef SNTP_CHECK_RESPONSE
-#define SNTP_CHECK_RESPONSE         0
+#define SNTP_CHECK_RESPONSE         1
 #endif
 
 /** According to the RFC, this shall be a random delay
@@ -441,7 +441,7 @@ sntp_thread(void *arg)
 void
 sntp_init(void)
 {
-  sys_thread_new("sntp_thread", sntp_thread, NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
+  sys_thread_new("sntp_thread", sntp_thread, NULL, 512, DEFAULT_THREAD_PRIO);
 }
 
 #else /* SNTP_SOCKET */
@@ -607,7 +607,10 @@ sntp_send_request(ip_addr_t *server_addr)
     /* initialize request message */
     sntp_initialize_request(sntpmsg);
     /* send request */
-    udp_sendto(sntp_pcb, p, server_addr, SNTP_PORT);
+    err_t res = udp_sendto(sntp_pcb, p, server_addr, SNTP_PORT);
+    if(res != ERR_OK)
+	LWIP_DEBUGF(SNTP_DEBUG_STATE, ("sntp_send_request: Sending request failed: %d\n", res));
+	
     pbuf_free(p);
 
     /* set up receive timeout: try next server or retry on timeout */
