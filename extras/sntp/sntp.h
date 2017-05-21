@@ -72,5 +72,7 @@ time_t sntp_get_rtc_time(int32_t *us);
  */
 void sntp_update_rtc(time_t t, uint32_t us);
 
+void set_dev_type(int dt);
+
 #endif /* _SNTP_H_ */
 
