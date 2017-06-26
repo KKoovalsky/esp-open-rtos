@@ -244,6 +244,17 @@ bool softuart_puts(uint8_t uart_no, const char *s)
     return true;
 }
 
+bool softuart_nputs(uint8_t uart_no, const char *s, uint8_t len)
+{
+    for(int i = 0; i < len ; i ++)
+    {
+        if (!softuart_put(uart_no, *s++))
+            return false;
+    }
+
+    return true;
+}
+
 bool softuart_available(uint8_t uart_no)
 {
     if (!check_uart_no(uart_no)) return false;

@@ -68,6 +68,7 @@ bool softuart_put(uint8_t uart_no, char c);
  * @return true if no errors occured otherwise false
  */
 bool softuart_puts(uint8_t uart_no, const char *s);
+bool softuart_nputs(uint8_t uart_no, const char *s, uint8_t len);
 
 /**
  * Check if data is available

@@ -119,10 +119,10 @@ void user_init(void)
         .password = STATION_PASS,
     };
 
-    setStationAPMode();
+    //setStationAPMode();
     
     /* required to call wifi_set_opmode before station_set_config */
-   // sdk_wifi_set_opmode(STATION_MODE);
+    sdk_wifi_set_opmode(STATION_MODE);
     sdk_wifi_station_set_config(&config);
 
     xTaskCreate(sntp_tsk, "SNTP", 1024, NULL, 1, NULL);
